@@ -1,4 +1,4 @@
 <?php
-    $conn = mysql_connect("54.68.191.122", "root", "Password");
+    $conn = mysql_connect("localhost", "root", "password");
     mysql_select_db("uConnect_db_scheme", $conn);
 ?>
