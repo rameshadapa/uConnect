@@ -13,27 +13,38 @@
 		{
 			if(! is_null($this->link))
 			{
-				return;
+				return false;
 			}
 			$link = @mysql_connect($this->hostname, $this->login, $this->password);
 			if(! $link)
 			{
-				throw new MyDBException(
-					sprintf(
-						'Cannot connect to database. mysql_connect() to %s with login %s fails',
-						$this->hostname,
-						$this->login
-					)
-				);
-			}
+                return false;
+            }
+            return true;
 		}
 		public function selectDatabase()
 		{
 			$ret = @mysql_select_db($this->database, $this->link);
 			if(! $ret)
 			{
-				throw new MyDBException('No database name %s existed', $this->database);
-			}
-		}
+                return false;
+            }
+            return true;
+        }
+        public function disconnect()
+        {
+            if($this->link)
+            {
+                if(@mysql_close())
+                {
+                    $this->link = false;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 	}
 ?>
