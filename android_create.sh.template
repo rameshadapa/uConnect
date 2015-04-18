@@ -1,6 +1,0 @@
-android create project \
---target 1 \
---name uBroadcast \
---path ./proj.android \
---activity uBroadcastAppActivity	\
---package com.devkids.ubroadcast
