@@ -7,15 +7,18 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 
+import com.uconnect.events.R;
+import com.uconnect.events.app.UCSuperFragmentActivity;
+
 /**
  * UCCustomUserCreate is to create the user based on the user preference
  * by asking email or phone no.
  */
-public class UCCustomUserCreate extends Activity {
+public class UCCustomUserCreate extends UCSuperFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        setContentView(0);
+        setContentView(R.layout.uc_create_user);
 
     }
 
