@@ -3,7 +3,7 @@
 			Valid				InValid
 input:			
 1. Mobile
-2. Device-id
+2. Device-id or email-id
 
 output:
 1. user-id.		Existed id			Null
@@ -16,14 +16,14 @@ if($_SERVER['REQUEST_METHOD'] == "GET")
 {
 //Get Data
 	$mobile = isset($_GET['mobile'])?mysql_real_escape_string($_GET['mobile']):"";
-	$device_id = isset($_GET['device_id'])?mysql_real_escape_string($_GET['device_id']):"";
+	$device_id = isset($_GET['unique_id'])?mysql_real_escape_string($_GET['unique_id']):"";
 	$json = array();
-	$ucdb = new UConnectDB("root","Password","uConnect_db_schema","localhost");
+	$ucdb = new UConnectDB("root","***********","uConnect_db_schema","localhost");
 	if($ucdb->connect())
 	{
 		if($ucdb->selectDatabase())
 		{
-			$sql = "select t_user_id from t_user where t_user_mobile_no='$mobile' and t_user_device_id='$device_id'";
+			$sql = "select t_user_id from t_user where t_user_mobile_no='$mobile' and t_user_unique_id='$device_id'";
 			$data = $ucdb->select($sql);
 			$size = count($data);
 			if($size <= 1)
@@ -46,7 +46,6 @@ if($_SERVER['REQUEST_METHOD'] == "GET")
 	else
 	{
 		$json = array("user_id" => 0, "message" => "DB Connection failed.");
-		echo "Connection failed.<br />";
 	}
 }
 else
