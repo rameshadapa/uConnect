@@ -1,5 +1,5 @@
 <?php
-include_once("MyDatabse.php");
+include_once("MyDatabase.php");
 	class UConnectDB extends MyDatabase
 	{
 		private $link = null;
