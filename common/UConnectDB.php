@@ -1,13 +1,14 @@
 <?php
+include_once("MyDatabse.php");
 	class UConnectDB extends MyDatabase
 	{
 		private $link = null;
 		
-		public function __construct($login, $password, $databse, $hostname)
+		public function __construct($login, $password, $database, $hostname)
 		{
-			parent::__construct($login, $password, $databse, $hostname);
-			$this->connect();
-			$this->selectDatabase();
+			parent::__construct($login, $password, $database, $hostname);
+//			$this->connect();
+//			$this->selectDatabase();
 		}
 		/*
 		*	Connect to the database
@@ -36,7 +37,7 @@
 		*/
 		public function selectDatabase()
 		{
-			$ret = @mysql_select_db($this->database, $this->link);
+			$ret = @mysql_select_db($this->database);
 			if(! $ret)
 			{
                 		return false;
@@ -90,7 +91,7 @@
 		{
 			$rows = array();
 			$result = $this->query($query);
-			if($result === false)
+			if($result == false)
 			{
 				return false;
 			}

@@ -9,6 +9,7 @@
 		public function __construct($login, $password, $database, $hostname)
 		{
 			$this->throwExceptionIfNotSet('login', $login);
+			$this->throwExceptionIfNotSet('password', $password);
 			$this->throwExceptionIfNotSet('database', $database);
 			$this->throwExceptionIfNotSet('hostname', $hostname);
 
