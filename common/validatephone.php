@@ -52,6 +52,6 @@ else
 {
 	$json = array("user_id" => 0, "message" => "Request method not accepted."); 
 }
-
+header('Content-type: application/json');
 echo json_encode($json);
 ?>
