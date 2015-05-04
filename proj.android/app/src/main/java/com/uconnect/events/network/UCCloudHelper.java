@@ -13,11 +13,11 @@ package com.uconnect.events.network;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.util.Log;
 
-import com.alesco.suggestionsapp.R;
-import com.alesco.suggestionsapp.network.services.BaseService.DataUpdateCallback;
-import com.alesco.suggestionsapp.utils.AppUtils;
-import com.alesco.suggestionsapp.utils.LogUtil;
+import com.uconnect.events.R;
+import com.uconnect.events.network.services.BaseService;
+import com.uconnect.events.utils.UCAppUtils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * Used to make all API calls in an AsyncTask with appropriate callbacks.
  */
-public class UCCloudHelper implements CloudConstants {
+public class UCCloudHelper implements UCCloudConstants {
 
     public static String OAUTH_TOKEN;
     private final byte CM_URL = 0;
@@ -86,16 +86,16 @@ public class UCCloudHelper implements CloudConstants {
         return parametersAsQueryString.toString();
     }
 
-    public void getData(String url, List<NameValuePair> entity, boolean reqDataCall, JSONCallback callback) {
-        if (AppUtils.getInstance().isNetworkAvailable(mContext)) {
+    public void getData(Context context, String url, List<NameValuePair> entity, boolean reqDataCall, JSONCallback callback) {
+        if (UCAppUtils.getInstance().isNetworkAvailable(context)) {
             new GetData().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url, entity, reqDataCall, callback);
         } else {
             callback.getJsonData(NetworkStatusConstants.HTTP_NO_NETWORK_CONNECTION, null, getStatusMsg(NetworkStatusConstants.HTTP_NO_NETWORK_CONNECTION));
         }
     }
 
-    public void postData(String url, List<NameValuePair> entity, boolean reqDataCall, JSONCallback callback) {
-        if (AppUtils.getInstance().isNetworkAvailable(mContext)) {
+    public void postData(Context context, String url, List<NameValuePair> entity, boolean reqDataCall, JSONCallback callback) {
+        if (UCAppUtils.getInstance().isNetworkAvailable(context)) {
             new PostData().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url, entity, reqDataCall, callback);
         } else {
             callback.getJsonData(NetworkStatusConstants.HTTP_NO_NETWORK_CONNECTION, null, getStatusMsg(NetworkStatusConstants.HTTP_NO_NETWORK_CONNECTION));
@@ -147,7 +147,7 @@ public class UCCloudHelper implements CloudConstants {
     /**
     * Checking for service error,
     * */
-    public boolean hasServiceError(JSONObject data, DataUpdateCallback callback) {
+    public boolean hasServiceError(JSONObject data, BaseService.DataUpdateCallback callback) {
         try {
             JSONObject obj = data.getJSONObject("baseResponse");
             String statusCode = obj.getString("statusCode");
@@ -211,7 +211,7 @@ public class UCCloudHelper implements CloudConstants {
             /*if (!AppUtils.getInstance().isNetworkAvailable(mContext)) {
                 return NetworkStatusConstants.HTTP_NO_NETWORK_CONNECTION;
             }*/
-            LogUtil.info("Alesco Signup API GetData url........." + url);
+            Log.v("UC_TAG", "Alesco Signup API GetData url........." + url);
             try {
                 HttpParams httpParameters = new BasicHttpParams();
                 HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
@@ -222,7 +222,7 @@ public class UCCloudHelper implements CloudConstants {
                 mHttpGet.addHeader("Content-Type", ContentType.CONTENT_TYPE_HTML);
                 mHttpGet.addHeader("Accept", ContentType.CONTENT_TYPE_JSON);
                 if (reqDataCall) {
-                    LogUtil.verbose("Alesco Header GetData OAUTH_TOKEN : " + OAUTH_TOKEN);
+                    Log.v("UC_TAG", "Alesco Header GetData OAUTH_TOKEN : " + OAUTH_TOKEN);
                     mHttpGet.addHeader(Header.HEADER_OATH_TOKEN, OAUTH_TOKEN);
                 }
 
@@ -297,7 +297,7 @@ public class UCCloudHelper implements CloudConstants {
             /*if (!AppUtils.getInstance().isNetworkAvailable(mContext)) {
                 return NetworkStatusConstants.HTTP_NO_NETWORK_CONNECTION;
             }*/
-            LogUtil.info("Alesco API PostData url........." + url);
+            Log.v("UC_TAG", "Alesco API PostData url........." + url);
 
             try {
                 HttpParams httpParameters = new BasicHttpParams();
@@ -309,7 +309,7 @@ public class UCCloudHelper implements CloudConstants {
                 mHttPost.addHeader("Content-Type", ContentType.CONTENT_TYPE_HTML);
                 mHttPost.addHeader("Accept", ContentType.CONTENT_TYPE_JSON);
                 if (reqDataCall) {
-                    LogUtil.verbose("Alesco Header PostData OAUTH_TOKEN : " + OAUTH_TOKEN);
+                    Log.v("UC_TAG", "Alesco Header PostData OAUTH_TOKEN : " + OAUTH_TOKEN);
                     mHttPost.addHeader(Header.HEADER_OATH_TOKEN, OAUTH_TOKEN);
                 }
 
@@ -321,7 +321,7 @@ public class UCCloudHelper implements CloudConstants {
                 HttpResponse response = httpClient.execute(mHttPost);
                 mStatusCode = response.getStatusLine().getStatusCode();
                 respData = getResponseAsString(response);
-                LogUtil.info("Alesco RateIT API Parsing Result ::: :::: " + respData + " :::::::: code ::: " + mStatusCode);
+                Log.v("UC_TAG", "Alesco RateIT API Parsing Result ::: :::: " + respData + " :::::::: code ::: " + mStatusCode);
             } catch (SocketTimeoutException e) {
                 e.printStackTrace();
                 return NetworkStatusConstants.HTTP_FAILURE;

@@ -7,8 +7,7 @@ import android.util.Log;
 import com.uconnect.events.R;
 import com.uconnect.events.app.UCAppConstants;
 import com.uconnect.events.app.UCSuperFragmentActivity;
-import com.uconnect.events.database.sharedprefs.UCAppPreferences;
-import com.uconnect.events.utils.UCUtils;
+import com.uconnect.events.utils.UCAppUtils;
 
 /**
  * Created by jaggu on 4/18/2015.
@@ -39,8 +38,10 @@ public class UCSplashScreenActivity extends UCSuperFragmentActivity implements U
     private void setupUser() {
 
         //TODO need to delete the below line of code.
-        UCAppPreferences.getInstance(app).savePreference(UCSharedPreferences.IS_USER_EXISTS, false);
-        boolean isUserExists = UCAppPreferences.getInstance(app).getPreference(UCSharedPreferences.IS_USER_EXISTS, false);
+        //UCAppPreferences.getInstance(app).savePreference(UCSharedPreferences.IS_USER_EXISTS, false);
+        //boolean isUserExists = UCAppPreferences.getInstance(app).getPreference(UCSharedPreferences.IS_USER_EXISTS, false);
+        boolean isUserExists = UCAppUtils.getInstance().isDBExists(app);
+        Log.v("UC_TAG", "U connect isUserExists : " + isUserExists);
         if(!isUserExists) { /*User does not exists*/
            startSetupUser();
         } else {
@@ -55,14 +56,15 @@ public class UCSplashScreenActivity extends UCSuperFragmentActivity implements U
      * database for user and crete the user on the server.
      */
     private void startSetupUser() {
-        String userId = UCUtils.getUCUserIdFromDevice(app);
+        String userId = UCAppUtils.getInstance().getUCUserIdFromDevice(app);
+        Log.v("UC_TAG", "U connect userId : " + userId);
         if(userId != null) {
             //Navigating to the create user screen.
             Bundle bundle = new Bundle();
             bundle.putString(BundleConstants.UC_USER_PRIMARY_EMAIL, userId);
-            bundle.putString(BundleConstants.UC_USER_PHONE_NO, UCUtils.getUCUserPhoneNoFromDevice(app));
+            bundle.putString(BundleConstants.UC_USER_PHONE_NO, UCAppUtils.getInstance().getUCUserPhoneNoFromDevice(app));
             Log.v("UC_TAG", "U connect userId : " + userId);
-            Log.v("UC_TAG", "U connect phoneNo : " + UCUtils.getUCUserPhoneNoFromDevice(app));
+            Log.v("UC_TAG", "U connect phoneNo : " + UCAppUtils.getInstance().getUCUserPhoneNoFromDevice(app));
             launchActivity(UCCustomUserCreate.class, bundle);
         } else {
             //Navigating to the custom user creation Activity.

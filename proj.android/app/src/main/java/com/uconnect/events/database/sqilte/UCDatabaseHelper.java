@@ -7,20 +7,19 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.uconnect.events.app.UCAppConstants;
+
 /**
  * UCDatabaseHelper helps to create the local sqlite database.
  */
-public class UCDatabaseHelper extends SQLiteOpenHelper {
+public class UCDatabaseHelper extends SQLiteOpenHelper implements UCAppConstants {
 
     /**
      *
      * @param context
-     * @param name
-     * @param factory
-     * @param version
      */
-    public UCDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version, null);
+    public UCDatabaseHelper(Context context) {
+        super(context, UCSQLiteDB.DATABASE_NAME, null, UCSQLiteDB.DATABASE_VERSION);
     }
 
     @Override

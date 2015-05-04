@@ -3,7 +3,7 @@
     package="com.uconnect.events" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATEE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".app.usersetup.UCCustomUserCreate"/>
         <activity android:name=".app.usersetup.UCCustomUserValidate"/>
+        <activity android:name=".app.usersetup.UCSelectCountry"/>
     </application>
 
 </manifest>

@@ -22,15 +22,22 @@ import java.util.regex.Pattern;
 public class UCAppUtils {
 
     private static UCAppUtils mInstance;
-    private static String[] countriesList = {"Choose a country", "India", "USA"};
-    private static String[] countryCodes = {"", "91", "1"};
+    private String[] countriesList = {"Choose a country", "India", "USA"};
+    private String[] countryCodes = {"", "91", "1"};
 
+    public static UCAppUtils getInstance() {
+        if(mInstance == null) {
+            mInstance = new UCAppUtils();
+        }
+
+        return mInstance;
+    }
     /**
      * read the email if exists else read the phone no and return it as UCUserId.
      * If both does not exists return null.
      * @return UCUserId.
      */
-    public static String getUCUserIdFromDevice(Context context) {
+    public String getUCUserIdFromDevice(Context context) {
         String ucUserId = null;
         Pattern emailPattern = Patterns.EMAIL_ADDRESS;
         Account[] accounts = AccountManager.get(context).getAccounts();
@@ -44,7 +51,7 @@ public class UCAppUtils {
         return ucUserId;
     }
 
-    public static String getUCUserPhoneNoFromDevice(Context context) {
+    public String getUCUserPhoneNoFromDevice(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String phoneNo = telephonyManager.getLine1Number();
         phoneNo = phoneNo == null ? "" : phoneNo;
@@ -52,28 +59,28 @@ public class UCAppUtils {
         return phoneNo;
     }
 
-    public static boolean isDBExists(Context context) {
+    public boolean isDBExists(Context context) {
         File uConnectDB = context.getDatabasePath(UCAppConstants.UCSQLiteDB.DATABASE_NAME);
 
         return uConnectDB.exists();
     }
 
-    public static String[] getCountries() {
+    public String[] getCountries() {
 
         return countriesList;
     }
 
-    public static String[] getCountryCodes() {
+    public String[] getCountryCodes() {
 
         return countryCodes;
     }
 
-    public static String getCountryCode(int index) {
+    public String getCountryCode(int index) {
 
         return countryCodes[index];
     }
 
-    public static String getCountryFromCode(String countryCode) {
+    public String getCountryFromCode(String countryCode) {
         int position = 0;
 
         for(int i = 0; i < countryCodes.length; i++) {
@@ -95,6 +102,7 @@ public class UCAppUtils {
         if (mContext == null) {
             return false;
         }
+
         ConnectivityManager connectivity = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
             NetworkInfo[] networkInfo = connectivity.getAllNetworkInfo();
